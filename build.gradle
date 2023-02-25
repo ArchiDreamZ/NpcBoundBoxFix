@@ -1,0 +1,243 @@
+
+// MOD 开发 基础 教程 作者：beanflame（豆焰）电邮：beanflame@qq.com
+//test
+// 构建脚本
+buildscript {
+
+	//你可以看看几个国内存储库，我们国内开发环境下载速度最快还行
+	// 存储库
+    repositories {
+    // 借用 阿里云 存储库，那是国内存储库, central 仓库 和 jcenter 仓库 合并的 0
+		maven {
+			name = "aliyun"
+			url "https://maven.aliyun.com/repository/public/"
+		}
+		
+		maven { url = "https://cyankoton.github.io/maven" }
+		
+		// 那是做叫 中央存储库， 绝大多数具备 Gradle项目 都离不开 mavenCentral（中央存储库）
+        mavenCentral()
+	
+		// FORGE 存储库
+        maven {
+            name = "forge"
+            //url = "https://files.minecraftforge.net/maven"
+	    url = "https://maven.minecraftforge.net"
+        }
+		// sonatype 存储库 Sonatype公司出资维护的，我们把它想象成是一个无比巨大，物产丰富的大库.....
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+
+}
+	
+	// 依赖库
+    dependencies {
+        classpath ("io.github.cyankoton:ForgeGradle:1.2-1.0.8") {
+            changing = true
+        }
+    }
+}
+
+
+//---------------------------------------------------------------------------------------------
+//如果下面没用，就是可以去掉了
+
+
+// 插件
+plugins {
+    id 'java-library'	// JAVA 依赖库
+    id 'maven-publish'	// 上传 maven 存储库 功能
+}
+
+
+//---------------------------------------------------------------------------------------------
+
+
+// JAVA 版本
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+compileJava.sourceCompatibility = '1.8'
+compileJava.targetCompatibility = '1.8'
+
+
+// 加载 LonganForgeGradle 插件，那是 forge 有用的呢
+apply plugin: 'forge'
+
+
+//设置镜像站
+mirrorstation {
+    // cyankoton
+    mcJsonUrl = "https://s3.amazonaws.com/Minecraft.Download/versions/{MC_VERSION}/{MC_VERSION}.json"
+    mcJarUrl = "https://cyankoton.github.io/maven/minecraft/versions/{MC_VERSION}/{MC_VERSION}.jar"
+    mcServerUrl = "https://cyankoton.github.io/maven/minecraft/versions/{MC_VERSION}/minecraft_server.{MC_VERSION}.jar"
+    mcpUrl = "https://files.minecraftforge.net/fernflower-fix-1.0.zip"
+    assetsUrl = "https://resources.download.minecraft.net"
+    libraryUrl = "https://libraries.minecraft.net/"
+    assetsIndexUrl = "https://s3.amazonaws.com/Minecraft.Download/indexes/{ASSET_INDEX}.json"
+    forgeMavenUrl = "https://maven.minecraftforge.net"
+    // mirror
+    mirrorMavenUrl = "https://cyankoton.github.io/maven"
+    aliyunMavenUrl = "https://maven.aliyun.com/repository/public"
+    mavenMavenUrl = "https://repo1.maven.org/maven2"
+
+    /*
+    // 默认设置
+    mcJsonUrl = "https://s3.amazonaws.com/Minecraft.Download/versions/{MC_VERSION}/{MC_VERSION}.json"
+    mcJarUrl = "https://s3.amazonaws.com/Minecraft.Download/versions/{MC_VERSION}/{MC_VERSION}.jar"
+    mcServerUrl = "https://s3.amazonaws.com/Minecraft.Download/versions/{MC_VERSION}/minecraft_server.{MC_VERSION}.jar"
+    mcpUrl = "https://files.minecraftforge.net/fernflower-fix-1.0.zip"
+    assetsUrl = "https://resources.download.minecraft.net"
+    libraryUrl = "https://libraries.minecraft.net/"
+    assetsIndexUrl = "https://s3.amazonaws.com/Minecraft.Download/indexes/{ASSET_INDEX}.json"
+    forgeMavenUrl = "https://maven.minecraftforge.net"
+    // mirror
+    mirrorMavenUrl = "https://cyankoton.github.io/maven"
+    aliyunMavenUrl = "https://maven.aliyun.com/repository/public"
+    mavenMavenUrl = "https://repo1.maven.org/maven2"
+    */
+}
+
+
+// MOD 版本信息 , 别忘写版本信息
+version = "1.1"
+group= "com.ArchiDreamZ.NpcBoundBoxFix"
+archivesBaseName = "NpcBoundBoxFix"
+
+
+// minecraft（我的世界） Forge 版本、 MCP 版本
+minecraft {
+	
+    version = "1.7.10-10.13.4.1614-1.7.10"
+    runDir = "eclipse"
+	// 最新的 MCP 版本是 stable_12 的 稳定版
+	// mappings = "stable_12"
+	
+}
+
+
+// 依赖库
+dependencies {
+
+	// 你可以把你的 本地 MOD 或 本地依赖 放到 libs 文件夹里，	./libs
+	// 或者你可以用存储库的网络下载依赖...
+	
+	
+	// 将 你的 本地 MOD 或 本地依赖 添加放到 libs 文件夹里, 开发环境能加载当然
+	// 用 Gradle (7.0)高版本 改写：
+	// 示例：
+	//implementation fileTree(dir: 'libs', include: ['*.jar'])
+	
+	
+	// 将 artifact 、classifier （第三方依赖库） 添加放到 开发环境 里
+	// 示例：
+    //compile "some.group:artifact:version:classifier"
+    //compile "some.group:artifact:version"
+	
+	
+	// 将 buildcraft（建筑工艺 MOD） 添加放到 开发环境 里
+	// 示例：
+    //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'
+	
+	
+	// 将 ejml（工业2 MOD 前置） 添加放到 开发环境 里
+	// 示例：
+    //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' 
+	
+	
+    // 有什么关详细更多信息...
+    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
+    // http://www.gradle.org/docs/current/userguide/dependency_management.html
+	
+}
+
+
+// 添加资源
+processResources {
+
+	// 这将确保在版本更改时重新执行此任务
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+	
+    // 仅替换 mcmod.info 中的值
+    filesMatching('mcmod.info') {
+		// 替换更新 version 和 mcversion
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+	
+}
+
+
+// 确保源文件的编码设置为UTF-8， 
+// 有什么关详细更多信息
+// http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
+tasks.withType(JavaCompile) {
+	
+    options.encoding = "UTF-8"
+	
+}
+
+
+//---------------------------------------------------------------------------------------------
+//如果下面没用，就是可以去掉了
+
+// 要认真发布MOD~~！
+
+
+//1
+
+
+
+// 这将此任务创建一个.jar文件，其中包含此 MOD 的源代码
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = "sources"
+    from sourceSets.main.allSource
+}
+
+
+// 这将此任务将创建一个.jar文件，其中包含此mod的已取消订阅版本，供其他开发人员在开发环境中使用。
+task devJar(type: Jar) {
+    classifier = "dev"
+    from sourceSets.main.output
+}
+
+
+// 在构建 MOD 时候，创建列出的工件
+artifacts {
+    archives sourcesJar
+    archives devJar
+}
+
+
+// 这将此块配置要生成的任何 maven 存储库 发布
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+			// 在这里添加您要发布 MOD 的任何其他工件！
+            artifact(jar) {
+                builtBy build
+            }
+            artifact(sourcesJar) {
+                builtBy sourcesJar
+            }
+            artifact(devJar) {
+                builtBy devJar
+            }
+        }
+    }
+	
+    // 这将此块选择要发布 MOD 添加放到 maven 存储库。
+    repositories {
+        // 这将在此处添加要发布 MOD 添加放到 maven 存储库
+    }
+}
+
+
+
+
+
+
+
+
+//---------------------------------------------------------------------------------------------
